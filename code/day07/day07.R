@@ -68,7 +68,7 @@ camel_cards |>
   mutate(df = map(hand, hand2type_with_joker)) |>
   unnest(df) |>
   separate_wider_position(hand, widths = c(card1 = 1, card2 = 1, card3 = 1, card4 = 1, card5 = 1)) |>
-  mutate(across(where(is_character), \(x) ordered(x, levels = rev(labels2)))) |>
+  mutate(across(card1:card5, \(x) ordered(x, levels = rev(labels2)))) |>
   arrange(type, card1, card2, card3, card4, card5) |>
   mutate(rank = row_number()) |>
   mutate(prod = bid * rank) |>
