@@ -76,14 +76,14 @@ steps_to_destination |>
   ggplot(aes(x = value, y = network, color = network)) +
   geom_point()
 
-# therefore we need to find the least common multiple of all step sizes
-step_sizes <- steps_to_destination |> map_int(1)
+# therefore we need to find the least common multiple of all cycle lengths
+cycle_lengths <- steps_to_destination |> map_int(1)
 
-reduce(step_sizes, numbers::LCM) |>
+reduce(cycle_lengths, numbers::LCM) |>
   # transform to character to disable the scientific notation 2.397753e+13
   as.character()
 
-# for fun I display networks
+# for fun I display the network
 g <- network |>
   pivot_longer(cols = c(L, R), names_to = "direction", values_to = "to") |>
   select(from = node, to, direction) |>
@@ -94,8 +94,8 @@ g <- network |>
     TRUE ~ NA_character_
   ))
 
-# turns out each start node has only one possible end node and therefore form
-# an independent network
+# turns out each start node can reach only one end node and therefore we see
+# various independent networks
 g |>
   ggraph(layout = "kk") +
   geom_edge_fan() +
